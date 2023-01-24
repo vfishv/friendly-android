@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.folderv.friendlyid.FriendlyId;
@@ -24,6 +25,15 @@ public class MainActivity extends AppCompatActivity {
         UUID uid = FriendlyId.toUuid(randomFriendlyID);
         TextView tv= findViewById(R.id.tv);
         tv.setText(randomFriendlyID + "\n" + uid);
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String randomFriendlyID = FriendlyId.createFriendlyId();
+                UUID uid = FriendlyId.toUuid(randomFriendlyID);
+                TextView tv= findViewById(R.id.tv);
+                tv.setText(randomFriendlyID + "\n" + uid);
+            }
+        });
 
         String fid = FriendlyId.toFriendlyId(UUID.fromString("c3587ec5-0976-497f-8374-61e0c2ea3da5"));
         Log.d(TAG, "fid: " + fid);
