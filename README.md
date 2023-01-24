@@ -1,4 +1,4 @@
-# friendly-android
-FriendlyID Android
+# friendly-androID
+FriendlyID for Android
 
-base on https://github.com/Devskiller/friendly-id
+base on https://github.com/Devskiller/friendly-id, but works on android API 16
