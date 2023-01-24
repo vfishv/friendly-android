@@ -12,6 +12,6 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "FriendlyID"
+//rootProject.name = "FriendlyandroID"
 include ':sample'
-//include ':friendly-android'
+include ':friendly-id'
