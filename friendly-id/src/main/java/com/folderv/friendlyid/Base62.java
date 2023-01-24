@@ -5,7 +5,9 @@ import java.util.function.BiFunction;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
-import static java.util.Objects.requireNonNull;
+import java.util.Objects;
+
+import android.os.Build;
 
 /**
  * Base62 encoder/decoder.
@@ -58,7 +60,13 @@ class Base62 {
 	}
 
 	static BigInteger decode(final String string, int bitLimit) {
-		requireNonNull(string, "Decoded string must not be null");
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			Objects.requireNonNull(string, "Decoded string must not be null");
+		} else {
+			if (string == null) {
+				return throwIllegalArgumentException("string '%s' must not be empty", string);
+			}
+		}
 		if (string.length() == 0) {
 			return throwIllegalArgumentException("String '%s' must not be empty", string);
 		}
@@ -67,15 +75,27 @@ class Base62 {
 			throwIllegalArgumentException("String '%s' contains illegal characters, only '%s' are allowed", string, DIGITS);
 		}
 
-		return IntStream.range(0, string.length())
-				.mapToObj(index -> BigInteger.valueOf(charAt.apply(string, index)).multiply(BASE.pow(index)))
-				.reduce(BigInteger.ZERO, (acc, value) -> {
-					BigInteger sum = acc.add(value);
-					if (bitLimit > 0 && sum.bitLength() > bitLimit) {
-						throwIllegalArgumentException("String '%s' contains more than 128bit information", string);
-					}
-					return sum;
-				});
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			return IntStream.range(0, string.length())
+					.mapToObj(index -> BigInteger.valueOf(charAt.apply(string, index)).multiply(BASE.pow(index)))
+					.reduce(BigInteger.ZERO, (acc, value) -> {
+						BigInteger sum = acc.add(value);
+						if (bitLimit > 0 && sum.bitLength() > bitLimit) {
+							throwIllegalArgumentException("String '%s' contains more than 128bit information", string);
+						}
+						return sum;
+					});
+		}
+		BigInteger result = BigInteger.ZERO;
+		int digits = string.length();
+		for (int index = 0; index < digits; index++) {
+			int digit = DIGITS.indexOf(string.charAt(digits - index - 1));
+			result = result.add(BigInteger.valueOf(digit).multiply(BASE.pow(index)));
+			if (bitLimit > 0 && result.bitLength() > bitLimit) {
+				throwIllegalArgumentException("String contains '%s' more than 128bit information (%sbit)", string, result.bitLength());
+			}
+		}
+		return result;
 
 	}
 
