@@ -1,4 +1,4 @@
-package com.folderv.friendlyid_test;
+package com.folderv.friendlyid;
 
 import java.math.BigInteger;
 import java.util.function.Function;
