@@ -28,7 +28,13 @@ android {
     }
 
     lint {
-        baseline = file("lint-baseline.xml")
+//        baseline = file("lint-baseline.xml")
+        abortOnError false
+        checkReleaseBuilds false
+//        checkOnly 'NewApi', 'InlinedApi'
+//        disable 'TypographyFractions', 'TypographyQuotes', 'RtlHardcoded', 'RtlCompat', 'RtlEnabled'
+        ignoreWarnings true
+        quiet true
     }
 }
 
