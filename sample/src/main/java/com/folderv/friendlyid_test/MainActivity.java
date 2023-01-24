@@ -3,6 +3,7 @@ package com.folderv.friendlyid_test;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.folderv.friendlyid.FriendlyId;
@@ -28,7 +29,18 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                long time = System.currentTimeMillis();
+                for (int i = 0; i < 100000; i++) {
+                    String randomFriendlyID = FriendlyId.createFriendlyId();
 
+                    UUID uuid = FriendlyId.toUuid(randomFriendlyID);
+                    String fid = FriendlyId.toFriendlyId(uuid);
+                    if(!TextUtils.equals(randomFriendlyID, fid)){
+                        Log.e(TAG, "error: " + randomFriendlyID);
+                    }
+                    Log.d(TAG, "randomFriendlyID: " + randomFriendlyID + ":" + uuid);
+                }
+                Log.i(TAG, "time: " + (System.currentTimeMillis() - time));
             }
         }).start();
 
