@@ -1,4 +1,4 @@
-package com.folderv.friendlyid;
+package com.folderv.friendlyid_test;
 
 import org.junit.Test;
 
