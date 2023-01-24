@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.folderv.friendlyid.FriendlyId;
+
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,6 +24,13 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "fid: " + fid);
         UUID uuid = FriendlyId.toUuid("5wbwf6yUxVBcr48AMbz9cb");
         Log.d(TAG, "uuid: " + uuid);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }).start();
 
     }
 }
