@@ -7,13 +7,17 @@ import java.util.UUID;
  */
 public class FriendlyId {
 
+	public static String randomFriendlyId() {
+		return Url62.encode(UUID.randomUUID());
+	}
+
 	/**
 	 * Create FriendlyId id
 	 *
 	 * @return Friendly Id encoded UUID
 	 */
 	public static String createFriendlyId() {
-		return Url62.encode(UUID.randomUUID());
+		return randomFriendlyId();
 	}
 
 	/**
