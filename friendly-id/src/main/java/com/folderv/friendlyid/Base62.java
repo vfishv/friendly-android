@@ -1,11 +1,8 @@
 package com.folderv.friendlyid;
 
 import java.math.BigInteger;
-import java.util.function.BiFunction;
 import java.util.regex.Pattern;
-import java.util.stream.IntStream;
 
-import java.util.Objects;
 
 import android.os.Build;
 
@@ -60,12 +57,8 @@ class Base62 {
 	}
 
 	static BigInteger decode(final String string, int bitLimit) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-			Objects.requireNonNull(string, "Decoded string must not be null");
-		} else {
-			if (string == null) {
-				return throwIllegalArgumentException("string '%s' must not be empty", string);
-			}
+		if (string == null) {
+			return throwIllegalArgumentException("string '%s' must not be empty", string);
 		}
 		if (string.length() == 0) {
 			return throwIllegalArgumentException("String '%s' must not be empty", string);
@@ -75,17 +68,6 @@ class Base62 {
 			throwIllegalArgumentException("String '%s' contains illegal characters, only '%s' are allowed", string, DIGITS);
 		}
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-			return IntStream.range(0, string.length())
-					.mapToObj(index -> BigInteger.valueOf(charAt.apply(string, index)).multiply(BASE.pow(index)))
-					.reduce(BigInteger.ZERO, (acc, value) -> {
-						BigInteger sum = acc.add(value);
-						if (bitLimit > 0 && sum.bitLength() > bitLimit) {
-							throwIllegalArgumentException("String '%s' contains more than 128bit information", string);
-						}
-						return sum;
-					});
-		}
 		BigInteger result = BigInteger.ZERO;
 		int digits = string.length();
 		for (int index = 0; index < digits; index++) {
@@ -98,8 +80,5 @@ class Base62 {
 		return result;
 
 	}
-
-	private static BiFunction<String, Integer, Integer> charAt = (string, index) ->
-			DIGITS.indexOf(string.charAt(string.length() - index - 1));
 
 }
