@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
             }
-            String str = "testCount:" + testCount + " time:" + (System.currentTimeMillis() - time) + "ms allRight:" + allRight + (allRight?"✅":"❌");
+            long ms = System.currentTimeMillis() - time;
+            String str = "times:" + testCount + " average:" + (1.0 * ms / testCount) + "ms \nall success:" + allRight + (allRight ? "✅" : "❌");
             Log.i(TAG, str);
             String randomFriendlyID = FriendlyId.createFriendlyId();
             UUID uuid = FriendlyId.toUuid(randomFriendlyID);
